@@ -25,6 +25,7 @@ namespace net_framework_simplex
 {
     public partial class Form1 : Form
     {
+        SolverContext context = SolverContext.GetContext();
         public Form1()
         {
             InitializeComponent();
@@ -350,7 +351,7 @@ namespace net_framework_simplex
 
                 if (userinput3[i] == "<=")
                 {
-                    solver.SetBounds(rest[i], Rational.NegativeInfinity, userinput5[i]);
+                    solver.SetBounds(rest[i], 0, userinput5[i]);
                 }
                 else
                 {
@@ -402,6 +403,19 @@ namespace net_framework_simplex
             //{
                // label3.Text = (solver.LpResult).ToString();
             //};
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
         private void button3_Click(object sender, EventArgs e)

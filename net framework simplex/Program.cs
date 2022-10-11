@@ -98,6 +98,7 @@ namespace net_framework_simplex
             // Create two decision variables representing the number of barrels to
             // purchase from two countries.
             // AddDecisions tells the model about the two variables.
+            
             Decision vz = new Decision(Domain.RealNonnegative, "barrels_venezuela");
             Decision sa = new Decision(Domain.RealNonnegative, "barrels_saudiarabia");
             model.AddDecisions(vz, sa);
@@ -107,7 +108,7 @@ namespace net_framework_simplex
             //0 <= vz <= 9000,
             //0 <= sa <= 6000);
             model.AddConstraints("production",
-            0.3 * vz + 0.4 * sa <= 2000,
+            0.3 * vz + 0.4 * sa >= 2000,
             0.4 * vz + 0.2 * sa >= 1500,
             0.2 * vz + 0.3 * sa >= 500);
             // AddGoal states that we want to minimize the total cost subject to the
