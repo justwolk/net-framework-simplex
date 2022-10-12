@@ -36,6 +36,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.results = new System.Windows.Forms.TextBox();
+            this.variables = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -114,11 +116,29 @@
             this.label3.Text = "label3";
             this.label3.Visible = false;
             // 
+            // results
+            // 
+            this.results.Location = new System.Drawing.Point(25, 320);
+            this.results.Name = "results";
+            this.results.Size = new System.Drawing.Size(100, 20);
+            this.results.TabIndex = 8;
+            // 
+            // variables
+            // 
+            this.variables.Location = new System.Drawing.Point(25, 361);
+            this.variables.Multiline = true;
+            this.variables.Name = "variables";
+            this.variables.Size = new System.Drawing.Size(100, 48);
+            this.variables.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.variables);
+            this.Controls.Add(this.results);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -144,5 +164,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox results;
+        private System.Windows.Forms.TextBox variables;
     }
 }

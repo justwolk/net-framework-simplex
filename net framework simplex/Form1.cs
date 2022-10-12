@@ -29,8 +29,9 @@ namespace net_framework_simplex
         public Form1()
         {
             InitializeComponent();
-            
-    }
+
+
+        }
 
         int a, b;
         double[] userinput; //rest
@@ -310,111 +311,68 @@ namespace net_framework_simplex
 
             //MessageBox.Show(item.ToString());
 
-            int goal;
+            
 
-            //decisions
-            //Decision vz = new Decision(Domain.RealNonnegative, "barrels_venezuela");
 
-            SimplexSolver solver = new SimplexSolver();
 
-            //int aa = a - 1;
-            var = new int[a];
-            //int bb = b - 1;
-            rest = new int[b];
 
-            //all vars, rest, goal
 
+            Model model = context.CreateModel();
+            string objectfunction = "";
             for (int i = 0; i < a; i++)
             {
-                string restname = "a" + i.ToString();
-                solver.AddVariable(restname, out var[i]);
-            }
+                string name = "";
+                objectfunction += userinput2[i].ToString() + " * x" + i.ToString();
+                if (i != a - 1) objectfunction += " + ";
+                name = "x" + i.ToString();
 
+
+                model.AddDecision(new Decision(Domain.RealNonnegative, name));
+            }
+            int itemm = 0;
             for (int i = 0; i < b; i++)
             {
-                string restname = "b" + i.ToString();
-                solver.AddRow(restname, out rest[i]);
-            }
-
-            solver.AddRow("goal", out goal);
-
-            //coeff a*b
-            // row = rest = const var = var
-            int start = 0;
-            for (int i = 0; i < b; i++)
-            {
+                string bebra = "";
+                //model.AddConstraint("Constrain_" + i.ToString(), constrains[i]);//each line represent a constrain
                 for (int j = 0; j < a; j++)
                 {
-                    solver.SetCoefficient(rest[i], var[j], userinput[start]);
-                    start++;
+                    bebra += userinput[itemm].ToString() + " * x" + j.ToString();
+                    if (j != a - 1) bebra += " + ";
+                    itemm++;
                 }
-
-                if (userinput3[i] == "<=")
-                {
-                    solver.SetBounds(rest[i], 0, userinput5[i]);
-                }
-                else
-                {
-                    solver.SetBounds(rest[i], userinput5[i], Rational.PositiveInfinity);
-                }
-            }
-            
-            //goals
-
-            for (int i = 0; i < a; i++)
-            {
-                solver.SetCoefficient(goal, var[i], userinput2[i]);
+                bebra += " " + userinput3[i].ToString() + " " + userinput5[i].ToString();
+                model.AddConstraint("Constrain_" + i.ToString(), bebra);
             }
 
-            //min max
+            GoalKind goalnew;
 
             if (userinput4 == "min")
             {
-                solver.AddGoal(goal, 1, true);
+                goalnew = GoalKind.Minimize;
             }
             else
             {
-                solver.AddGoal(goal, 1, false);
+                goalnew = GoalKind.Maximize;
             }
 
-            SimplexSolverParams parameter = new SimplexSolverParams(); parameter.GetSensitivityReport = true;
-            ILinearSolution solution = solver.Solve(parameter);
+            model.AddGoal("target", goalnew, objectfunction);
 
-            string toout = "Result: ";
-            toout += Math.Round((solver.GetValue(goal).ToDouble()),3);
-            toout += "\nVars: \n";
-            for (int i = 0; i < a; i++)
+            SimplexDirective simplxReactor = new SimplexDirective();
+            //simplxReactor.GetSensitivity = true;
+            //simplxReactor.GetInfeasibility = true;
+            Solution solutionnew = context.Solve(simplxReactor);
+            Report reportnew = solutionnew.GetReport();
+
+            results.Text = ""; //removing old values if existed
+            results.Text = solutionnew.Goals.First().ToDouble().ToString();
+
+            variables.Text = "";
+            foreach (Decision d in model.Decisions) //adding decisions(variables) and they production size in variable textbox
             {
-                toout += "x" + ((i+1).ToString()) + ": ";
-                toout += Math.Round(solver.GetValue(var[i]).ToDouble(), 3);
-                toout += " \n";
+
+                variables.Text += d.Name + " = " + d.ToString() + Environment.NewLine;
             }
-
-            label3.Visible = true;
-            //for (int i = 0; i < a; i++)
-            //{
-               // if (solver.GetValue(var[i]).ToDouble() < 0) toout = "Решения  не существует";
-            //}
-            string sss = (solver.LpResult).ToString();
-            toout += "\n" + sss;
-            label3.Text = toout;
-            
-            //if (sss != "optimal")
-            //{
-               // label3.Text = (solver.LpResult).ToString();
-            //};
-
-
-
-
-
-
-
-
-
-
-
-
+            context.ClearModel();
 
         }
 
